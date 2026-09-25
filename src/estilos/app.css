@@ -373,3 +373,11 @@ main:has(.paso-contenido--ancho) { max-width: 1320px; }
   .descarga-item { flex-direction: column; align-items: stretch; }
   .descarga { width: 100%; }
 }
+
+/* ---------- Pulido ---------- */
+.evidencias-form .evidencias { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 8px; }
+.evidencias-form .evidencias li { width: auto; }
+.evidencia-opcion .miniatura__nombre { max-width: 96px; }
+@media print {
+  .barra, .pasos, .acciones, .pie { display: none; }
+}

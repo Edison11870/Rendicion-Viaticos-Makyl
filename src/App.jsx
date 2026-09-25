@@ -34,6 +34,9 @@ export default function App() {
   const sel = useMemo(() => armarSeleccion(cand, viaje, trabajador, forzados), [cand, viaje, trabajador, forzados])
   const filas = useMemo(() => filasRendicion(cand, sel.ids, forzados), [cand, sel, forzados])
 
+  // «Resultado» solo cuando hay algo que rendir
+  const habilitado = (i) => i === 0 || (paso1Ok && (i < 5 || filas.length > 0))
+
   function nuevaRendicion() {
     comprobantes.vaciar()
     setGastos([])
@@ -49,7 +52,6 @@ export default function App() {
 
   const paso1Ok =
     Object.keys(validarTrabajador(trabajador)).length === 0 && Object.keys(validarViaje(viaje)).length === 0
-  const habilitado = (i) => i === 0 || paso1Ok
 
   const actual = PASOS[paso]
 
