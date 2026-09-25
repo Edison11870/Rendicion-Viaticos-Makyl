@@ -3,6 +3,7 @@ import Pasos from './componentes/Pasos.jsx'
 import PasoViaje from './pasos/PasoViaje.jsx'
 import PasoPendiente from './pasos/PasoPendiente.jsx'
 import PasoComprobantes from './pasos/PasoComprobantes.jsx'
+import PasoRevision from './pasos/PasoRevision.jsx'
 import { useComprobantes } from './estado/useComprobantes.js'
 import { guardar, leer } from './almacen/local.js'
 import { TRABAJADOR_VACIO, validarTrabajador, validarViaje, viajeVacio } from './reglas/viaje.js'
@@ -10,8 +11,7 @@ import { TRABAJADOR_VACIO, validarTrabajador, validarViaje, viajeVacio } from '.
 const PASOS = [
   { id: 'viaje', titulo: 'Viaje' },
   { id: 'comprobantes', titulo: 'Comprobantes' },
-  { id: 'revision', titulo: 'Revisión', etapa: 3,
-    descripcion: 'Corrige lo leído, confirma categoría y descripción, y revisa las alertas.' },
+  { id: 'revision', titulo: 'Revisión' },
   { id: 'movilidad', titulo: 'Movilidad', etapa: 4,
     descripcion: 'Taxis sin comprobante para la Planilla de Movilidad Diaria.' },
   { id: 'seleccion', titulo: 'Selección', etapa: 5,
@@ -59,6 +59,8 @@ export default function App() {
           />
         ) : actual.id === 'comprobantes' ? (
           <PasoComprobantes comprobantes={comprobantes} onVolver={() => setPaso(0)} onContinuar={() => setPaso(2)} />
+        ) : actual.id === 'revision' ? (
+          <PasoRevision comprobantes={comprobantes} viaje={viaje} onVolver={() => setPaso(1)} onContinuar={() => setPaso(3)} />
         ) : (
           <PasoPendiente
             titulo={actual.titulo}

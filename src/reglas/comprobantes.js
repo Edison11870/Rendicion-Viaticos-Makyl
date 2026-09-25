@@ -1,4 +1,5 @@
 // Comprobantes cargados: estructura de cada uno y edición de campos. Sin interfaz (se prueba aparte).
+import { proponerClasificacion } from './categorias.js'
 
 export const TIPOS = [
   { valor: 'factura', etiqueta: 'Factura' },
@@ -37,7 +38,13 @@ export function nuevoComprobante(archivo) {
     origen: '',
     campos: null,
     dudas: {},
+    clasificacion: null, // { categoria, descripcion, alternativa, motivo, confirmado }
+    decision: null, // null · 'incluir' (a pesar de las alertas) · 'excluir'
   }
+}
+
+function propuesta(campos, texto) {
+  return { ...proponerClasificacion(campos, texto), confirmado: false }
 }
 
 /** Aplica el resultado de la lectura. */
@@ -52,7 +59,19 @@ export function conLectura(c, lectura) {
     origen: lectura.origen,
     campos,
     dudas,
+    clasificacion: propuesta(campos, lectura.texto),
   }
+}
+
+/** Cambia categoría o descripción. Lo que el usuario escribe o elige queda confirmado. */
+export function conClasificacion(c, cambios, { confirmar = true } = {}) {
+  const base = c.clasificacion || propuesta(c.campos || {}, c.texto)
+  return { ...c, clasificacion: { ...base, ...cambios, confirmado: confirmar || base.confirmado } }
+}
+
+/** Decisión del usuario frente a las alertas. */
+export function conDecision(c, decision) {
+  return { ...c, decision }
 }
 
 /** Cambia un campo; al corregirlo a mano deja de estar «en duda». */

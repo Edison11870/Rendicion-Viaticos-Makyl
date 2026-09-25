@@ -1,5 +1,13 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { comprobanteVacio, conCampo, conLectura, nuevoComprobante, tipoDeArchivo } from '../reglas/comprobantes.js'
+import {
+  comprobanteVacio,
+  conCampo,
+  conClasificacion,
+  conDecision,
+  conLectura,
+  nuevoComprobante,
+  tipoDeArchivo,
+} from '../reglas/comprobantes.js'
 
 // pdf.js y el OCR pesan: se cargan recién cuando llega el primer archivo
 const lector = () => import('../extraccion/leerArchivo.js')
@@ -64,5 +72,15 @@ export function useComprobantes() {
 
   const reintentar = useCallback((id) => actualizar(id, { estado: 'en-cola', error: '', avance: 0 }), [actualizar])
 
-  return { lista, agregar, quitar, editar, reintentar }
+  const clasificar = useCallback((id, cambios) => actualizar(id, (c) => conClasificacion(c, cambios)), [actualizar])
+
+  const decidir = useCallback((id, decision) => actualizar(id, (c) => conDecision(c, decision)), [actualizar])
+
+  /** Confirma tal cual la propuesta de varios comprobantes (acción explícita del usuario). */
+  const confirmarPropuestas = useCallback((ids) => {
+    const set = new Set(ids)
+    setLista((l) => l.map((c) => (set.has(c.id) ? conClasificacion(c, {}) : c)))
+  }, [])
+
+  return { lista, agregar, quitar, editar, reintentar, clasificar, decidir, confirmarPropuestas }
 }
