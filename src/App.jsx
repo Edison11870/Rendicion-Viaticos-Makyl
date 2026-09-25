@@ -1,10 +1,12 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import Pasos from './componentes/Pasos.jsx'
 import PasoViaje from './pasos/PasoViaje.jsx'
 import PasoPendiente from './pasos/PasoPendiente.jsx'
 import PasoComprobantes from './pasos/PasoComprobantes.jsx'
 import PasoRevision from './pasos/PasoRevision.jsx'
 import PasoMovilidad from './pasos/PasoMovilidad.jsx'
+import PasoSeleccion from './pasos/PasoSeleccion.jsx'
+import { armarSeleccion, candidatosRendicion } from './reglas/rendicion.js'
 import { useComprobantes } from './estado/useComprobantes.js'
 import { guardar, leer } from './almacen/local.js'
 import { TRABAJADOR_VACIO, validarTrabajador, validarViaje, viajeVacio } from './reglas/viaje.js'
@@ -14,8 +16,7 @@ const PASOS = [
   { id: 'comprobantes', titulo: 'Comprobantes' },
   { id: 'revision', titulo: 'Revisión' },
   { id: 'movilidad', titulo: 'Movilidad' },
-  { id: 'seleccion', titulo: 'Selección', etapa: 5,
-    descripcion: 'La combinación que cubre el monto recibido con el menor exceso.' },
+  { id: 'seleccion', titulo: 'Selección' },
   { id: 'resultado', titulo: 'Resultado', etapa: 6,
     descripcion: 'Excel de rendición, planillas, PDF de sustentos y comprobantes no usados.' },
 ]
@@ -27,6 +28,11 @@ export default function App() {
   const comprobantes = useComprobantes()
   // gastos sin comprobante (solo datos, se guardan en el navegador)
   const [gastos, setGastos] = useState(() => leer('movilidad', { gastos: [] }).gastos)
+  // comprobantes/planillas que el usuario obliga a meter ('si') o sacar ('no') de la selección
+  const [forzados, setForzados] = useState({})
+
+  const cand = useMemo(() => candidatosRendicion(comprobantes.lista, gastos, viaje), [comprobantes.lista, gastos, viaje])
+  const sel = useMemo(() => armarSeleccion(cand, viaje, trabajador, forzados), [cand, viaje, trabajador, forzados])
 
   useEffect(() => { guardar('trabajador', trabajador) }, [trabajador])
   useEffect(() => { guardar('viaje', viaje) }, [viaje])
@@ -74,6 +80,8 @@ export default function App() {
             onVolver={() => setPaso(2)}
             onContinuar={() => setPaso(4)}
           />
+        ) : actual.id === 'seleccion' ? (
+          <PasoSeleccion cand={cand} sel={sel} forzados={forzados} setForzados={setForzados} onVolver={() => setPaso(3)} onContinuar={() => setPaso(5)} />
         ) : (
           <PasoPendiente
             titulo={actual.titulo}

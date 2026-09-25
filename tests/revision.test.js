@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { detalleComoDescripcion, proponerClasificacion } from '../src/reglas/categorias.js'
-import { conClasificacion, conDecision, conLectura, normalizarDocumento, nuevoComprobante } from '../src/reglas/comprobantes.js'
+import { conCampo, conClasificacion, conDecision, conLectura, normalizarDocumento, nuevoComprobante } from '../src/reglas/comprobantes.js'
 import { alertasComprobante, estadoRevision } from '../src/reglas/validacion.js'
 
 describe('propuesta de categoría y descripción', () => {
@@ -117,6 +117,13 @@ describe('estado de revisión', () => {
     expect(c.clasificacion).toMatchObject({ categoria: 'movilidad', descripcion: 'SERVICIO DE TAXI', confirmado: false })
     expect(estadoRevision(c, [])).toBe('por-confirmar')
     expect(estadoRevision(conClasificacion(c, {}), [])).toBe('valido')
+  })
+
+  it('la propuesta sigue a los datos corregidos mientras no esté confirmada', () => {
+    const c = conCampo(comprobante({ detalle: '', razonSocial: '' }), 'razonSocial', 'RESTAURANT Y MARISQUERIA EJEMPLO')
+    expect(c.clasificacion).toMatchObject({ categoria: 'alimentacion', confirmado: false })
+    const confirmado = conClasificacion(c, {})
+    expect(conCampo(confirmado, 'razonSocial', 'TAXI EJEMPLO').clasificacion.categoria).toBe('alimentacion')
   })
 
   it('editar la descripción la deja confirmada', () => {

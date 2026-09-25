@@ -25,7 +25,7 @@ categoría y una descripción, y genera:
 | 2 | Carga de comprobantes, lectura (pdf.js + OCR) y tabla editable | ✅ |
 | 3 | Categoría y descripción propuestas, alertas de validación | ✅ |
 | 4 | Planilla de Movilidad Diaria (tope configurable) | ✅ |
-| 5 | Selección óptima de comprobantes | ⏳ |
+| 5 | Selección óptima de comprobantes | ✅ |
 | 6 | Excel de rendición, PDF de sustentos, comprobantes no usados | ⏳ |
 | 7 | Ajustes para celular y documentación final | ⏳ |
 

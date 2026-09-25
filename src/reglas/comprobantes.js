@@ -83,7 +83,9 @@ export function conCampo(c, campo, valor) {
     campos.esComprobante = valor !== 'evidencia'
     if (valor === 'evidencia') return { ...c, campos, dudas: {} }
   }
-  return { ...c, campos, dudas }
+  // mientras la categoría no esté confirmada, la propuesta sigue a los datos corregidos
+  const clasificacion = c.clasificacion?.confirmado ? c.clasificacion : propuesta(campos, c.texto)
+  return { ...c, campos, dudas, clasificacion }
 }
 
 /** Comprobante manual (para cuando la lectura falla del todo). */
