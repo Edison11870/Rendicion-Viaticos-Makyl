@@ -39,3 +39,6 @@ npm-debug.log*
 .idea/
 .vscode/*
 !.vscode/extensions.json
+
+# Motor OCR copiado desde node_modules (scripts/copiar-ocr.mjs)
+public/tesseract/

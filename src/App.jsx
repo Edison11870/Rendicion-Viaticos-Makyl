@@ -2,13 +2,14 @@ import { useEffect, useState } from 'react'
 import Pasos from './componentes/Pasos.jsx'
 import PasoViaje from './pasos/PasoViaje.jsx'
 import PasoPendiente from './pasos/PasoPendiente.jsx'
+import PasoComprobantes from './pasos/PasoComprobantes.jsx'
+import { useComprobantes } from './estado/useComprobantes.js'
 import { guardar, leer } from './almacen/local.js'
 import { TRABAJADOR_VACIO, validarTrabajador, validarViaje, viajeVacio } from './reglas/viaje.js'
 
 const PASOS = [
   { id: 'viaje', titulo: 'Viaje' },
-  { id: 'comprobantes', titulo: 'Comprobantes', etapa: 2,
-    descripcion: 'Arrastra todos los PDF o fotos de tus comprobantes; se leen en tu equipo.' },
+  { id: 'comprobantes', titulo: 'Comprobantes' },
   { id: 'revision', titulo: 'Revisión', etapa: 3,
     descripcion: 'Corrige lo leído, confirma categoría y descripción, y revisa las alertas.' },
   { id: 'movilidad', titulo: 'Movilidad', etapa: 4,
@@ -23,6 +24,7 @@ export default function App() {
   const [trabajador, setTrabajador] = useState(() => leer('trabajador', TRABAJADOR_VACIO))
   const [viaje, setViaje] = useState(() => leer('viaje', viajeVacio()))
   const [paso, setPaso] = useState(0)
+  const comprobantes = useComprobantes()
 
   useEffect(() => { guardar('trabajador', trabajador) }, [trabajador])
   useEffect(() => { guardar('viaje', viaje) }, [viaje])
@@ -55,6 +57,8 @@ export default function App() {
             setViaje={setViaje}
             onContinuar={() => setPaso(1)}
           />
+        ) : actual.id === 'comprobantes' ? (
+          <PasoComprobantes comprobantes={comprobantes} onVolver={() => setPaso(0)} onContinuar={() => setPaso(2)} />
         ) : (
           <PasoPendiente
             titulo={actual.titulo}

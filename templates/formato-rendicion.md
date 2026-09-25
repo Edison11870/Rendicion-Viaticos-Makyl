@@ -72,3 +72,15 @@ No vino en el Excel; se reconstruye del PDF impreso (A4 vertical, Calibri).
   3 filas de detalle; «Total, Trabajador» y «Firma» combinadas verticalmente.
 - `Total, Movilidad del día` con el total en `S/` y doble subrayado.
 - Marco exterior alrededor de toda la planilla.
+
+# Decisiones confirmadas con el usuario
+
+1. **«Total, Trabajador S/.»** (planilla): en los PDF sale «1», resto de la plantilla. Va el **total del día**.
+2. **Planilla sin comprobante** también para alimentación (práctica de la empresa), pero la selección
+   **prioriza comprobantes** (facturas/boletas) y usa planillas solo si hacen falta. El tope diario
+   (4 % RMV, configurable) es **alerta, no bloqueo**.
+3. **«Saldos Entregados :»** lleva la **diferencia** = monto entregado − total gastos
+   (positiva: a devolver por el trabajador; negativa: a favor del trabajador).
+4. Normalizaciones: «CONSUMO DE ALIMENTOS» (el original dice «DEALIMENTOS»), DOCUMENTO como
+   `SERIE-NÚMERO` (p. ej. `E001-9951`), «Planilla N° 001».
+5. Orden de filas: primero comprobantes por fecha, luego planillas por número.

@@ -147,3 +147,102 @@ main { flex: 1; width: 100%; max-width: 960px; margin: 0 auto; padding: 0 16px 3
 }
 
 .pie { text-align: center; font-size: 0.8rem; color: var(--texto-suave); padding: 16px; }
+
+/* ---------- Paso 2: comprobantes ---------- */
+.paso-contenido--ancho { max-width: none; }
+main:has(.paso-contenido--ancho) { max-width: 1320px; }
+.solo-lector { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+.zona {
+  border: 2px dashed var(--azul); border-radius: var(--radio); background: var(--azul-claro);
+  padding: 24px 16px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 6px;
+}
+.zona--encima { border-style: solid; background: var(--naranja-claro); border-color: var(--naranja); }
+.zona__titulo { margin: 0; font-weight: 700; font-size: 1.15rem; color: var(--azul-osc); }
+.zona__sub { margin: 0; color: var(--texto-suave); font-size: 0.9rem; }
+.zona__botones { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 8px; }
+.zona__botones .boton--secundario { align-self: auto; }
+
+.aviso { margin: 0; padding: 10px 12px; border-radius: 8px; }
+.aviso--error { background: var(--error-claro); color: var(--error); }
+
+.cifras { display: flex; flex-wrap: wrap; gap: 8px 18px; align-items: baseline; font-size: 0.95rem; }
+.cifras--duda { color: #9a5b00; }
+.cifras--error { color: var(--error); }
+.cifras__suma { margin-left: auto; font-size: 1.05rem; }
+.cifras__suma strong { color: var(--azul); }
+
+.tabla-envoltura { background: var(--superficie); border: 1px solid var(--borde); border-radius: var(--radio); box-shadow: var(--sombra); overflow-x: auto; }
+.tabla { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+.tabla th { text-align: left; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.03em; color: var(--texto-suave); padding: 10px 8px; border-bottom: 1px solid var(--borde); white-space: nowrap; }
+.tabla td { padding: 8px; border-bottom: 1px solid var(--borde); vertical-align: top; }
+.tabla tr:last-child td { border-bottom: 0; }
+.fila--duda { background: color-mix(in srgb, var(--naranja-claro) 55%, transparent); }
+.col-documento { min-width: 148px; }
+.col-fecha { min-width: 140px; }
+.col-rucEmisor { min-width: 132px; }
+.col-razonSocial { min-width: 200px; }
+.col-total, .col-igv { min-width: 80px; }
+.col-tipo { min-width: 110px; }
+
+.dato {
+  font: inherit; color: inherit; background: var(--superficie); width: 100%;
+  border: 1px solid var(--borde); border-radius: 6px; padding: 6px 7px; min-height: 36px;
+}
+.dato:focus-visible { outline: 2px solid var(--azul); outline-offset: 1px; }
+.dato--duda { border-color: var(--naranja); background: var(--naranja-claro); box-shadow: inset 3px 0 0 var(--naranja); }
+.col-total .dato, .col-igv .dato { text-align: right; }
+
+.miniatura { display: flex; flex-direction: column; align-items: center; gap: 4px; background: none; border: 0; padding: 0; cursor: zoom-in; font: inherit; color: var(--texto-suave); width: 76px; }
+.miniatura img { width: 64px; height: 84px; object-fit: cover; object-position: top; border: 1px solid var(--borde); border-radius: 4px; background: #fff; }
+.miniatura__nombre { font-size: 0.7rem; max-width: 76px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.estado { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; font-size: 0.85rem; white-space: nowrap; }
+.estado--ok { color: var(--ok); }
+.estado--duda { color: #9a5b00; }
+.estado--error { color: var(--error); white-space: normal; }
+.estado--cola, .estado--leyendo { color: var(--texto-suave); }
+.estado progress { width: 70px; }
+.dudas { margin: 6px 0 0; padding-left: 16px; font-size: 0.78rem; color: var(--texto-suave); max-width: 260px; }
+.celda-acciones { white-space: nowrap; }
+.boton--peligro { color: var(--error); }
+.vacio { color: var(--texto-suave); }
+
+.evidencias { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 16px; }
+.evidencias li { display: flex; flex-direction: column; align-items: center; gap: 6px; width: 170px; }
+
+/* Visor */
+.visor { border: 0; border-radius: var(--radio); padding: 0; width: min(1100px, 96vw); max-height: 94vh; background: var(--superficie); color: var(--texto); }
+.visor::backdrop { background: rgb(0 0 0 / 55%); }
+.visor__marco { display: flex; flex-direction: column; max-height: 94vh; }
+.visor__cabecera { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; border-bottom: 1px solid var(--borde); gap: 8px; overflow-wrap: anywhere; }
+.visor__cuerpo { display: grid; grid-template-columns: 1fr; overflow: auto; }
+.visor__imagen { background: #e9edf2; padding: 12px; overflow: auto; }
+.visor__imagen img { display: block; width: 100%; height: auto; background: #fff; box-shadow: var(--sombra); }
+.visor__campos { padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+.campo-visor { display: flex; flex-direction: column; gap: 3px; font-size: 0.85rem; font-weight: 700; }
+.campo-visor .dato { font-weight: 400; }
+.campo-visor__duda { font-weight: 400; color: #9a5b00; }
+@media (min-width: 860px) {
+  .visor__cuerpo { grid-template-columns: minmax(0, 3fr) minmax(280px, 2fr); }
+  .visor__imagen { max-height: calc(94vh - 50px); }
+}
+
+/* En celular la tabla se convierte en tarjetas */
+@media (max-width: 859px) {
+  .tabla thead { display: none; }
+  .tabla, .tabla tbody, .tabla tr, .tabla td { display: block; width: 100%; }
+  .tabla tr { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 10px; padding: 12px; border-bottom: 1px solid var(--borde); }
+  .tabla td { border: 0; padding: 0; min-width: 0; }
+  .tabla td[data-etiqueta]::before { content: attr(data-etiqueta); display: block; font-size: 0.72rem; font-weight: 700; color: var(--texto-suave); text-transform: uppercase; margin-bottom: 2px; }
+  .tabla td.celda-vista { grid-column: 1 / -1; }
+  .tabla td.celda-vista::before { display: none; }
+  .tabla td.col-razonSocial, .tabla td[data-etiqueta="Estado"], .tabla td.celda-acciones { grid-column: 1 / -1; }
+  .miniatura { flex-direction: row; width: auto; }
+  .miniatura__nombre { max-width: 70vw; font-size: 0.85rem; }
+  .cifras__suma { margin-left: 0; width: 100%; }
+}
+@media (prefers-color-scheme: dark) {
+  .cifras--duda, .estado--duda, .campo-visor__duda { color: var(--naranja); }
+  .visor__imagen { background: #0b1118; }
+}

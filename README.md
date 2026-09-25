@@ -22,7 +22,7 @@ categoría y una descripción, y genera:
 |---|---|---|
 | 0 | Repositorio y estructura | ✅ |
 | 1 | Base de la página, datos del viaje, publicación en GitHub Pages | ✅ |
-| 2 | Carga de comprobantes, lectura (pdf.js + OCR) y tabla editable | ⏳ |
+| 2 | Carga de comprobantes, lectura (pdf.js + OCR) y tabla editable | ✅ |
 | 3 | Categoría y descripción propuestas, alertas de validación | ⏳ |
 | 4 | Planilla de Movilidad Diaria (tope configurable) | ⏳ |
 | 5 | Selección óptima de comprobantes | ⏳ |
@@ -50,6 +50,7 @@ Otros comandos:
 npm run build      # genera la versión publicable en dist/
 npm run preview    # prueba la versión publicable en local
 npm test           # pruebas de extracción, validación y selección
+npm run probar-ejemplos  # lee comprobantes reales de ejemplos/ (carpeta local, no se sube)
 ```
 
 ## Cómo usar
@@ -78,12 +79,14 @@ Configuración única en GitHub: **Settings → Pages → Build and deployment �
 ```
 src/
   pasos/       una pantalla por paso del asistente
+  extraccion/  lectura de PDF (pdf.js), OCR (tesseract.js) e interpretación de campos SUNAT
+  estado/      cola de lectura de comprobantes
   componentes/ piezas de interfaz reutilizables
   reglas/      validaciones y cálculos (sin interfaz, con pruebas)
   util/        formato de montos y fechas
   almacen/     guardado local en el navegador
   config/      datos fijos de la empresa y parámetros por defecto
-public/      archivos que se publican tal cual (logo; datos del OCR en la Etapa 2)
+public/      archivos que se publican tal cual (logo; el OCR se copia en public/tesseract al compilar)
 templates/   formato oficial de la empresa y logo
 tests/       pruebas (Vitest)
 ```

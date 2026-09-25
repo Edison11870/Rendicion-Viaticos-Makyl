@@ -5,17 +5,23 @@
   "description": "Rendición automática de viáticos MAKYL: todo se procesa en el navegador.",
   "type": "module",
   "scripts": {
+    "predev": "node scripts/copiar-ocr.mjs",
     "dev": "vite",
+    "prebuild": "node scripts/copiar-ocr.mjs",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "vitest run"
+    "test": "vitest run",
+    "probar-ejemplos": "node scripts/probar-ejemplos.mjs ejemplos"
   },
   "engines": {
     "node": ">=20.19"
   },
   "dependencies": {
+    "@tesseract.js-data/spa": "^1.0.0",
+    "pdfjs-dist": "^6.3.289",
     "react": "^19.3.0",
-    "react-dom": "^19.3.0"
+    "react-dom": "^19.3.0",
+    "tesseract.js": "^7.0.0"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^6.1.1",
