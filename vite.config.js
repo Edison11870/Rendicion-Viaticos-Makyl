@@ -10,6 +10,8 @@ export default defineConfig({
   base: './',
   plugins: [react()],
   define: { __VERSION__: JSON.stringify(version) },
+  // pdf.js, el OCR y ExcelJS son pesados, pero se cargan recién cuando se usan (import dinámico)
+  build: { chunkSizeWarningLimit: 2500 },
   test: {
     include: ['tests/**/*.test.js'],
   },

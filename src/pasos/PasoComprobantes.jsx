@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import TablaComprobantes, { COLUMNAS, CampoComprobante } from '../componentes/TablaComprobantes.jsx'
 import Visor from '../componentes/Visor.jsx'
 import ZonaCarga from '../componentes/ZonaCarga.jsx'
@@ -7,21 +7,11 @@ import { soles } from '../util/formato.js'
 
 /** Paso 2: carga de comprobantes, lectura automática y corrección en tabla. */
 export default function PasoComprobantes({ comprobantes, onVolver, onContinuar }) {
-  const { lista, agregar, quitar, editar, reintentar } = comprobantes
+  const { lista, agregar, quitar, editar, reintentar, guardados, recuperarGuardados } = comprobantes
   const [rechazados, setRechazados] = useState([])
   const [viendo, setViendo] = useState(null)
   const r = resumen(lista)
 
-  // aviso si se intenta cerrar o recargar con comprobantes cargados (aún no se guardan)
-  useEffect(() => {
-    if (!lista.length) return
-    const aviso = (e) => {
-      e.preventDefault()
-      e.returnValue = ''
-    }
-    window.addEventListener('beforeunload', aviso)
-    return () => window.removeEventListener('beforeunload', aviso)
-  }, [lista.length])
 
   const comprobantesLista = lista.filter((c) => c.estado !== 'listo' || c.campos.esComprobante)
   const evidencias = lista.filter((c) => c.estado === 'listo' && !c.campos.esComprobante)
@@ -35,6 +25,16 @@ export default function PasoComprobantes({ comprobantes, onVolver, onContinuar }
       </header>
 
       <ZonaCarga onArchivos={(a) => setRechazados(agregar(a))} />
+      {guardados > 0 && (
+        <div className="aviso aviso--info">
+          <span>
+            Tienes <strong>{guardados}</strong> comprobante(s) guardados de otra rendición (no utilizados).
+          </span>
+          <button type="button" className="boton boton--secundario" onClick={recuperarGuardados}>
+            Traerlos a esta rendición
+          </button>
+        </div>
+      )}
       {rechazados.length > 0 && (
         <p className="aviso aviso--error" role="alert">
           No se aceptaron (formato no soportado): {rechazados.join(', ')}
@@ -78,10 +78,10 @@ export default function PasoComprobantes({ comprobantes, onVolver, onContinuar }
 
       {evidencias.length > 0 && (
         <section className="tarjeta" aria-labelledby="t-evidencias">
-          <h2 id="t-evidencias">Evidencias (no son comprobantes)</h2>
+          <h2 id="t-evidencias">Evidencias y constancias (no son comprobantes)</h2>
           <p className="nota">
-            Capturas de Yape/Plin, apps de taxi o transferencias. Se usarán como sustento de la Planilla de Movilidad. Si alguna
-            sí es un comprobante, cambia su tipo.
+            Capturas de Yape/Plin o de apps de taxi (sustentan la Planilla de Movilidad) y la constancia del depósito que
+            recibiste (va al final del PDF). Si alguna sí es un comprobante, cambia su tipo.
           </p>
           <ul className="evidencias">
             {evidencias.map((c) => (
@@ -114,9 +114,7 @@ export default function PasoComprobantes({ comprobantes, onVolver, onContinuar }
       )}
 
       {lista.length > 0 && (
-        <p className="nota">
-          Los archivos se quedan solo en esta pestaña: si la recargas, tendrás que volver a subirlos.
-        </p>
+        <p className="nota">Los archivos se guardan solo en este navegador; si recargas la página, siguen aquí.</p>
       )}
 
       <div className="acciones">

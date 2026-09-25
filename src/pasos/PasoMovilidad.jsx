@@ -17,7 +17,7 @@ import { centimosATexto, isoADmy, soles } from '../util/formato.js'
 export default function PasoMovilidad({ gastos, setGastos, comprobantes, viaje, trabajador, onVolver, onContinuar }) {
   const [editando, setEditando] = useState(null) // gasto en edición (nuevo o existente)
   const [vista, setVista] = useState(null) // id de planilla en vista previa
-  const evidencias = comprobantes.lista.filter((c) => c.estado === 'listo' && !c.campos?.esComprobante)
+  const evidencias = comprobantes.lista.filter((c) => c.estado === 'listo' && c.campos?.tipo === 'evidencia')
   const planillas = agruparPorDia(gastos)
   const tope = topeDiarioMovilidad(trabajador)
 

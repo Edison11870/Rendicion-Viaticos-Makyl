@@ -13,6 +13,8 @@ const NO_ES_NOMBRE =
   /(FACTURA|BOLETA|TICKET|NOTA DE|RECIBO|ELECTR[OÓ]NIC|R\.?U\.?C|^\s*(AV|JR|CAL|CAR|MZ|PSJE|CALLE|JIRON|AVENIDA|C)\.?\s|TEL[EÉ]F|CENTRAL|EMAIL|@|WWW\.|^\s*\d)/i
 const SUFIJO_EMPRESA = /\b(S\.?\s?A\.?\s?C\.?|S\.?\s?A\.?|E\.?\s?I\.?\s?R\.?\s?L\.?|S\.?\s?R\.?\s?L\.?|S\.?\s?A\.?\s?A\.?)\s*$/i
 
+// constancia de la transferencia/depósito con que la empresa entregó el dinero
+const CONSTANCIA_DEPOSITO = /(TRANSFERENCIA A TERCEROS|MONTO RECIBIDO|CONSTANCIA DE (DEP[OÓ]SITO|TRANSFERENCIA)|DEP[OÓ]SITO EN CUENTA)/i
 const EVIDENCIA_NO_COMPROBANTE = /(YAPEASTE|YAPE|PLIN|TRANSFERENCIA A TERCEROS|DETALLE DE MOVIMIENTO|CITY RIDE|RIDE\s*[·-]\s*COMPLETED|UBER|DIDI|CABIFY|INDRIVE)/i
 
 function limpiarLinea(l) {
@@ -228,7 +230,7 @@ export function interpretarComprobante(texto, { origen = 'pdf' } = {}) {
 
   return {
     esComprobante: !noEsComprobante,
-    tipo: noEsComprobante ? 'evidencia' : tipo,
+    tipo: noEsComprobante ? (CONSTANCIA_DEPOSITO.test(plano) ? 'deposito' : 'evidencia') : tipo,
     serie: sn?.serie ?? '',
     numero: sn?.numero ?? '',
     documento: sn ? [sn.serie, sn.numero].filter(Boolean).join('-') : '',

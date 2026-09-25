@@ -90,7 +90,6 @@ main { flex: 1; width: 100%; max-width: 960px; margin: 0 auto; padding: 0 16px 3
 .tarjeta__titulo { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
 .tarjeta__titulo h2 { font-size: 1.1rem; }
 .tarjeta--resumen { background: var(--azul-claro); border-color: transparent; }
-.tarjeta--pendiente { background: var(--naranja-claro); border-color: var(--naranja); }
 .nota { margin: 0; font-size: 0.85rem; color: var(--texto-suave); }
 
 /* Formularios */
@@ -362,4 +361,15 @@ main:has(.paso-contenido--ancho) { max-width: 1320px; }
 }
 @media (prefers-color-scheme: dark) {
   .seleccion__item--planilla .seleccion__texto strong { color: var(--naranja); }
+}
+
+/* ---------- Paso 6: resultado ---------- */
+.descargas { gap: 0; padding: 0; }
+.descarga-item { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 16px; border-top: 1px solid var(--borde); }
+.descarga-item:first-child { border-top: 0; }
+.descarga-item h2 { font-size: 1.05rem; margin-bottom: 4px; }
+.descarga { white-space: nowrap; min-width: 190px; }
+@media (max-width: 639px) {
+  .descarga-item { flex-direction: column; align-items: stretch; }
+  .descarga { width: 100%; }
 }

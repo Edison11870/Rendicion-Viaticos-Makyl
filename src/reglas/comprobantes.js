@@ -8,7 +8,11 @@ export const TIPOS = [
   { valor: 'recibo', etiqueta: 'Recibo por honorarios' },
   { valor: 'otro', etiqueta: 'Otro comprobante' },
   { valor: 'evidencia', etiqueta: 'Evidencia (Yape, app de taxi…)' },
+  { valor: 'deposito', etiqueta: 'Constancia del depósito recibido' },
 ]
+
+/** Tipos que no son comprobantes de gasto (sustentos que acompañan). */
+export const NO_COMPROBANTES = ['evidencia', 'deposito']
 
 export const CAMPOS_EDITABLES = ['tipo', 'documento', 'fecha', 'rucEmisor', 'razonSocial', 'total', 'igv']
 
@@ -80,8 +84,8 @@ export function conCampo(c, campo, valor) {
   delete dudas[campo]
   const campos = { ...c.campos, [campo]: valor }
   if (campo === 'tipo') {
-    campos.esComprobante = valor !== 'evidencia'
-    if (valor === 'evidencia') return { ...c, campos, dudas: {} }
+    campos.esComprobante = !NO_COMPROBANTES.includes(valor)
+    if (!campos.esComprobante) return { ...c, campos, dudas: {} }
   }
   // mientras la categoría no esté confirmada, la propuesta sigue a los datos corregidos
   const clasificacion = c.clasificacion?.confirmado ? c.clasificacion : propuesta(campos, c.texto)

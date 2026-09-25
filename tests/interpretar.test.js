@@ -110,6 +110,11 @@ describe('interpretar comprobantes', () => {
     expect(r.tipo).toBe('evidencia')
   })
 
+  it('reconoce la constancia del depósito (transferencia BCP)', () => {
+    const r = interpretarComprobante(T.constanciaBcp, { origen: 'ocr' })
+    expect(r).toMatchObject({ esComprobante: false, tipo: 'deposito' })
+  })
+
   it('texto vacío: todo queda marcado para revisar', () => {
     const r = interpretarComprobante('')
     expect(r.total).toBeNull()

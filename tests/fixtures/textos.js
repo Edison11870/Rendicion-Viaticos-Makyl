@@ -128,3 +128,12 @@ Nombre Ejemplo
 DATOS DE LA TRANSACCIÓN
 Destino Plin
 Nro. de operación 1603810`
+
+export const constanciaBcp = `12:39
+Detalle de movimiento
+Transferencia a terceros BCP
+Monto recibido
+S/ 250.00
+Sábado, 28 de febrero de 2026 - 11:46 a.m.
+Recibido desde Cuenta Corriente
+Número de operación 2375774`

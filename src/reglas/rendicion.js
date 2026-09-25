@@ -71,3 +71,24 @@ export function textoSaldo(diferencia) {
   if (diferencia < 0) return 'a favor del trabajador'
   return 'sin saldo'
 }
+
+/**
+ * Comprobantes que NO entran en esta rendición, con el motivo. Se guardan para otra rendición
+ * (p. ej. los de otro viaje que se subieron por error, o los que no hicieron falta).
+ */
+export function noUtilizados(lista, ids, viaje) {
+  return lista
+    .filter((c) => c.campos?.esComprobante && !ids.has(c.id))
+    .map((c) => {
+      const alertas = alertasComprobante(c, viaje, lista)
+      const estado = estadoRevision(c, alertas)
+      let motivo = 'No hizo falta para cubrir el monto'
+      if (c.decision === 'excluir') {
+        motivo = alertas.some((a) => a.campo === 'fecha') ? 'Fecha fuera del viaje' : 'Excluido por el usuario'
+      } else if (estado === 'por-confirmar') motivo = 'Sin confirmar categoría'
+      else if (estado === 'por-decidir') motivo = 'Con alertas sin decidir'
+      else if (c.campos.moneda === 'USD') motivo = 'En dólares'
+      return { c, motivo }
+    })
+    .sort((a, b) => (a.c.campos.fecha || '').localeCompare(b.c.campos.fecha || ''))
+}

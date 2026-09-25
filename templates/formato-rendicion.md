@@ -12,7 +12,7 @@ Es la referencia que debe reproducir `src/salida/` (Etapa 6). No contiene datos 
 | Márgenes (pulg.) | izq. 0.512 · der. 0.118 · sup. 0.157 · inf. 0.354 · sin encabezado/pie |
 | Área de impresión | `A1:F61` |
 | Fuente | Calibri 11 en toda la hoja |
-| Logo | `logo-makyl.png` (160×99 px), anclado de `B1` (+151) a `D5` |
+| Logo | `logo-rendicion.jpg` (161×105 px, la imagen que usa la hoja), anclado de `B1` (+151) a `D5`. `logo-makyl.png` (con «ENGINEERING») es la otra imagen del archivo; se usa en la página |
 
 ## Columnas (ancho en caracteres de Excel)
 
@@ -50,7 +50,7 @@ Detalle (filas 14–52):
 
 - `B` fecha real de Excel, formato `m/d/yy` (se ve `dd/mm/aaaa` con configuración regional de Perú), centrado.
 - `C` serie-número como texto, centrado.
-- `D` descripción, alineada a la izquierda.
+- `D` descripción, alineada a la izquierda con sangría 1.
 - `E` número con formato contable
   `_-[$S/-280A]\ * #,##0.00_-;\-[$S/-280A]\ * #,##0.00_-;_-[$S/-280A]\ * "-"??_-;_-@_-`.
 - `F` formato `"S/."#,##0.00;[Red]"S/."\-#,##0.00` (sin uso en los ejemplos).

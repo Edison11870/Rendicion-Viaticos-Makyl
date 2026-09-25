@@ -1,12 +1,12 @@
 import { useEffect, useMemo, useState } from 'react'
 import Pasos from './componentes/Pasos.jsx'
 import PasoViaje from './pasos/PasoViaje.jsx'
-import PasoPendiente from './pasos/PasoPendiente.jsx'
 import PasoComprobantes from './pasos/PasoComprobantes.jsx'
 import PasoRevision from './pasos/PasoRevision.jsx'
 import PasoMovilidad from './pasos/PasoMovilidad.jsx'
 import PasoSeleccion from './pasos/PasoSeleccion.jsx'
-import { armarSeleccion, candidatosRendicion } from './reglas/rendicion.js'
+import PasoResultado from './pasos/PasoResultado.jsx'
+import { armarSeleccion, candidatosRendicion, filasRendicion } from './reglas/rendicion.js'
 import { useComprobantes } from './estado/useComprobantes.js'
 import { guardar, leer } from './almacen/local.js'
 import { TRABAJADOR_VACIO, validarTrabajador, validarViaje, viajeVacio } from './reglas/viaje.js'
@@ -17,8 +17,7 @@ const PASOS = [
   { id: 'revision', titulo: 'Revisión' },
   { id: 'movilidad', titulo: 'Movilidad' },
   { id: 'seleccion', titulo: 'Selección' },
-  { id: 'resultado', titulo: 'Resultado', etapa: 6,
-    descripcion: 'Excel de rendición, planillas, PDF de sustentos y comprobantes no usados.' },
+  { id: 'resultado', titulo: 'Resultado' },
 ]
 
 export default function App() {
@@ -33,6 +32,15 @@ export default function App() {
 
   const cand = useMemo(() => candidatosRendicion(comprobantes.lista, gastos, viaje), [comprobantes.lista, gastos, viaje])
   const sel = useMemo(() => armarSeleccion(cand, viaje, trabajador, forzados), [cand, viaje, trabajador, forzados])
+  const filas = useMemo(() => filasRendicion(cand, sel.ids, forzados), [cand, sel, forzados])
+
+  function nuevaRendicion() {
+    comprobantes.vaciar()
+    setGastos([])
+    setForzados({})
+    setViaje(viajeVacio())
+    setPaso(0)
+  }
 
   useEffect(() => { guardar('trabajador', trabajador) }, [trabajador])
   useEffect(() => { guardar('viaje', viaje) }, [viaje])
@@ -83,11 +91,14 @@ export default function App() {
         ) : actual.id === 'seleccion' ? (
           <PasoSeleccion cand={cand} sel={sel} forzados={forzados} setForzados={setForzados} onVolver={() => setPaso(3)} onContinuar={() => setPaso(5)} />
         ) : (
-          <PasoPendiente
-            titulo={actual.titulo}
-            descripcion={actual.descripcion}
-            etapa={actual.etapa}
-            onVolver={() => setPaso(paso - 1)}
+          <PasoResultado
+            filas={filas}
+            sel={sel}
+            trabajador={trabajador}
+            viaje={viaje}
+            comprobantes={comprobantes}
+            onVolver={() => setPaso(4)}
+            onNueva={nuevaRendicion}
           />
         )}
       </main>

@@ -26,7 +26,7 @@ categoría y una descripción, y genera:
 | 3 | Categoría y descripción propuestas, alertas de validación | ✅ |
 | 4 | Planilla de Movilidad Diaria (tope configurable) | ✅ |
 | 5 | Selección óptima de comprobantes | ✅ |
-| 6 | Excel de rendición, PDF de sustentos, comprobantes no usados | ⏳ |
+| 6 | Excel de rendición, PDF de sustentos, comprobantes no usados | ✅ |
 | 7 | Ajustes para celular y documentación final | ⏳ |
 
 Página publicada: <https://edison11870.github.io/Rendicion-Viaticos-Makyl/>

@@ -9,6 +9,8 @@ import {
   tipoDeArchivo,
 } from '../reglas/comprobantes.js'
 
+import { GUARDADOS, SESION, aRegistro, agregar as agregarDb, borrar as borrarDb, deRegistro, leerTodos, reemplazar } from '../almacen/indexeddb.js'
+
 // pdf.js y el OCR pesan: se cargan recién cuando llega el primer archivo
 const lector = () => import('../extraccion/leerArchivo.js')
 
@@ -18,7 +20,39 @@ const lector = () => import('../extraccion/leerArchivo.js')
  */
 export function useComprobantes() {
   const [lista, setLista] = useState([])
+  const [restaurado, setRestaurado] = useState(false)
+  const [guardados, setGuardados] = useState(0) // comprobantes guardados de otras rendiciones
   const ocupado = useRef(false)
+
+  // al abrir: recuperar la rendición en curso (si se recargó la página) y contar los guardados
+  useEffect(() => {
+    let vivo = true
+    Promise.all([leerTodos(SESION), leerTodos(GUARDADOS)]).then(([sesion, g]) => {
+      if (!vivo) return
+      if (sesion.length) setLista((l) => (l.length ? l : sesion.sort((a, b) => (a.orden ?? 0) - (b.orden ?? 0)).map(deRegistro)))
+      setGuardados(g.length)
+      setRestaurado(true)
+    })
+    return () => {
+      vivo = false
+    }
+  }, [])
+
+  // guardar la sesión (con una pequeña espera para no escribir en cada tecla)
+  useEffect(() => {
+    if (!restaurado) return
+    const t = setTimeout(async () => {
+      const registros = await Promise.all(
+        lista.map(async (c, orden) => {
+          const r = await aRegistro(c)
+          // lo que se estaba leyendo vuelve a la cola al recuperar
+          return { ...r, orden, estado: r.estado === 'leyendo' ? 'en-cola' : r.estado }
+        }),
+      )
+      reemplazar(SESION, registros)
+    }, 700)
+    return () => clearTimeout(t)
+  }, [lista, restaurado])
 
   const actualizar = useCallback((id, cambio) => {
     setLista((l) => l.map((c) => (c.id === id ? (typeof cambio === 'function' ? cambio(c) : { ...c, ...cambio }) : c)))
@@ -82,5 +116,36 @@ export function useComprobantes() {
     setLista((l) => l.map((c) => (set.has(c.id) ? conClasificacion(c, {}) : c)))
   }, [])
 
-  return { lista, agregar, quitar, editar, reintentar, clasificar, decidir, confirmarPropuestas }
+  /** Guarda comprobantes para otra rendición (vuelven sin decisión, con sus datos confirmados). */
+  const guardarParaOtra = useCallback(async (comprobantes, referencia) => {
+    const registros = await Promise.all(comprobantes.map(async (c) => ({ ...(await aRegistro(c)), decision: null, deRendicion: referencia })))
+    const ok = await agregarDb(GUARDADOS, registros)
+    setGuardados((await leerTodos(GUARDADOS)).length)
+    return ok
+  }, [])
+
+  /** Trae a esta rendición los comprobantes guardados antes. */
+  const recuperarGuardados = useCallback(async () => {
+    const g = await leerTodos(GUARDADOS)
+    setLista((l) => {
+      const ya = new Set(l.map((c) => c.id))
+      return [...l, ...g.filter((r) => !ya.has(r.id)).map(deRegistro)]
+    })
+    await borrarDb(GUARDADOS, g.map((r) => r.id))
+    setGuardados(0)
+    return g.length
+  }, [])
+
+  /** Empieza una rendición nueva (vacía la lista y la sesión guardada). */
+  const vaciar = useCallback(() => {
+    setLista((l) => {
+      for (const c of l) if (c.vista) URL.revokeObjectURL(c.vista)
+      return []
+    })
+  }, [])
+
+  return {
+    lista, agregar, quitar, editar, reintentar, clasificar, decidir, confirmarPropuestas,
+    guardados, guardarParaOtra, recuperarGuardados, vaciar, restaurado,
+  }
 }
