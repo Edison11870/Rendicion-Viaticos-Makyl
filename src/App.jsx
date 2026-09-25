@@ -4,6 +4,7 @@ import PasoViaje from './pasos/PasoViaje.jsx'
 import PasoPendiente from './pasos/PasoPendiente.jsx'
 import PasoComprobantes from './pasos/PasoComprobantes.jsx'
 import PasoRevision from './pasos/PasoRevision.jsx'
+import PasoMovilidad from './pasos/PasoMovilidad.jsx'
 import { useComprobantes } from './estado/useComprobantes.js'
 import { guardar, leer } from './almacen/local.js'
 import { TRABAJADOR_VACIO, validarTrabajador, validarViaje, viajeVacio } from './reglas/viaje.js'
@@ -12,8 +13,7 @@ const PASOS = [
   { id: 'viaje', titulo: 'Viaje' },
   { id: 'comprobantes', titulo: 'Comprobantes' },
   { id: 'revision', titulo: 'Revisión' },
-  { id: 'movilidad', titulo: 'Movilidad', etapa: 4,
-    descripcion: 'Taxis sin comprobante para la Planilla de Movilidad Diaria.' },
+  { id: 'movilidad', titulo: 'Movilidad' },
   { id: 'seleccion', titulo: 'Selección', etapa: 5,
     descripcion: 'La combinación que cubre el monto recibido con el menor exceso.' },
   { id: 'resultado', titulo: 'Resultado', etapa: 6,
@@ -25,9 +25,12 @@ export default function App() {
   const [viaje, setViaje] = useState(() => leer('viaje', viajeVacio()))
   const [paso, setPaso] = useState(0)
   const comprobantes = useComprobantes()
+  // gastos sin comprobante (solo datos, se guardan en el navegador)
+  const [gastos, setGastos] = useState(() => leer('movilidad', { gastos: [] }).gastos)
 
   useEffect(() => { guardar('trabajador', trabajador) }, [trabajador])
   useEffect(() => { guardar('viaje', viaje) }, [viaje])
+  useEffect(() => { guardar('movilidad', { gastos }) }, [gastos])
   useEffect(() => { window.scrollTo({ top: 0 }) }, [paso])
 
   const paso1Ok =
@@ -61,6 +64,16 @@ export default function App() {
           <PasoComprobantes comprobantes={comprobantes} onVolver={() => setPaso(0)} onContinuar={() => setPaso(2)} />
         ) : actual.id === 'revision' ? (
           <PasoRevision comprobantes={comprobantes} viaje={viaje} onVolver={() => setPaso(1)} onContinuar={() => setPaso(3)} />
+        ) : actual.id === 'movilidad' ? (
+          <PasoMovilidad
+            gastos={gastos}
+            setGastos={setGastos}
+            comprobantes={comprobantes}
+            viaje={viaje}
+            trabajador={trabajador}
+            onVolver={() => setPaso(2)}
+            onContinuar={() => setPaso(4)}
+          />
         ) : (
           <PasoPendiente
             titulo={actual.titulo}
