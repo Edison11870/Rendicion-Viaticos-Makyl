@@ -1,0 +1,41 @@
+# Dependencias
+node_modules/
+
+# Compilado
+dist/
+.vite/
+coverage/
+
+# Comprobantes (facturas, boletas, tickets, capturas de Yape/taxi): NUNCA se suben
+*.pdf
+*.PDF
+comprobantes/
+ejemplos/
+muestras/
+
+# Reportes generados por la aplicación
+reportes/
+salida/
+*.xlsx
+*.xls
+*.zip
+# ...salvo el formato oficial de la empresa
+!templates/*.xlsx
+
+# Fotos de comprobantes fuera de public/ (los íconos de public/ sí se versionan)
+/*.jpg
+/*.jpeg
+/*.png
+/*.heic
+/*.webp
+
+# Entorno y editor
+.env
+.env.*
+.DS_Store
+Thumbs.db
+*.log
+npm-debug.log*
+.idea/
+.vscode/*
+!.vscode/extensions.json
