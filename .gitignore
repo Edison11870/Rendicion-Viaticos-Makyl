@@ -9,13 +9,13 @@ coverage/
 # Comprobantes (facturas, boletas, tickets, capturas de Yape/taxi): NUNCA se suben
 *.pdf
 *.PDF
-comprobantes/
-ejemplos/
-muestras/
+/comprobantes/
+/ejemplos/
+/muestras/
 
 # Reportes generados por la aplicación
-reportes/
-salida/
+/reportes/
+/salida/
 *.xlsx
 *.xls
 *.zip
