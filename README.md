@@ -16,16 +16,30 @@ categoría y una descripción, y genera:
 
 ## Estado
 
-🚧 En desarrollo. Etapa 0: estructura del repositorio. El plan por etapas está en la conversación de diseño y
-se irá reflejando aquí.
+🚧 En desarrollo.
+
+| Etapa | Contenido | Estado |
+|---|---|---|
+| 0 | Repositorio y estructura | ✅ |
+| 1 | Base de la página, datos del viaje, publicación en GitHub Pages | ✅ |
+| 2 | Carga de comprobantes, lectura (pdf.js + OCR) y tabla editable | ⏳ |
+| 3 | Categoría y descripción propuestas, alertas de validación | ⏳ |
+| 4 | Planilla de Movilidad Diaria (tope configurable) | ⏳ |
+| 5 | Selección óptima de comprobantes | ⏳ |
+| 6 | Excel de rendición, PDF de sustentos, comprobantes no usados | ⏳ |
+| 7 | Ajustes para celular y documentación final | ⏳ |
+
+Página publicada: <https://edison11870.github.io/Rendicion-Viaticos-Makyl/>
+
+El formato oficial medido del Excel de la empresa está en [`templates/formato-rendicion.md`](templates/formato-rendicion.md).
 
 ## Cómo instalar (desarrollo)
 
-Requisitos: [Node.js](https://nodejs.org) 20 o superior.
+Requisitos: [Node.js](https://nodejs.org) 20.19 o superior.
 
 ```bash
-git clone https://github.com/Edison11870/rendicion-viaticos-makyl.git
-cd rendicion-viaticos-makyl
+git clone https://github.com/Edison11870/Rendicion-Viaticos-Makyl.git
+cd Rendicion-Viaticos-Makyl
 npm install
 npm run dev        # abre http://localhost:5173
 ```
@@ -54,15 +68,24 @@ npm test           # pruebas de extracción, validación y selección
 
 ## Publicación (GitHub Pages)
 
-La página se publica gratis con GitHub Pages mediante una GitHub Action que corre `npm run build` y sube
-`dist/`. Una vez configurada, cada cambio en `main` actualiza la página publicada.
+La página se publica gratis con GitHub Pages mediante la GitHub Action `.github/workflows/deploy.yml`
+(corre las pruebas, `npm run build` y sube `dist/`). Cada cambio en `main` actualiza la página.
+
+Configuración única en GitHub: **Settings → Pages → Build and deployment → Source: GitHub Actions**.
 
 ## Estructura
 
 ```
-src/         Código de la aplicación (React + Vite)
-public/      Archivos estáticos que se publican tal cual (íconos, datos del OCR)
-templates/   Formato oficial de la empresa (Rendición de Gastos, Planilla de Movilidad)
+src/
+  pasos/       una pantalla por paso del asistente
+  componentes/ piezas de interfaz reutilizables
+  reglas/      validaciones y cálculos (sin interfaz, con pruebas)
+  util/        formato de montos y fechas
+  almacen/     guardado local en el navegador
+  config/      datos fijos de la empresa y parámetros por defecto
+public/      archivos que se publican tal cual (logo; datos del OCR en la Etapa 2)
+templates/   formato oficial de la empresa y logo
+tests/       pruebas (Vitest)
 ```
 
 ## Tecnología
