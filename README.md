@@ -31,8 +31,9 @@ categoría y la descripción, y elige qué comprobantes usar para cubrir el mont
    - Las capturas de Yape/Plin o de apps de taxi se separan como **evidencias**. La transferencia con que te
      depositaron se reconoce como **constancia del depósito**.
 3. **Revisión.**
-   - Cada comprobante trae una categoría (movilidad, alimentación, hospedaje, otros) y una descripción
-     **propuestas**. Confírmalas o cámbialas.
+   - Cada comprobante trae una categoría y una descripción **propuestas**. Confírmalas o cámbialas.
+     Categorías: movilidad, pasajes, alimentación, hospedaje, combustible, peajes y estacionamiento, materiales
+     y útiles, EPP, salud y medicinas, comunicaciones, impresiones y copias, envíos y courier, lavandería y otros.
    - Las alertas te piden decidir si el comprobante entra: fecha fuera del viaje, datos incompletos, factura
      no emitida a MAKYL, repetidos.
 4. **Movilidad** (opcional).
@@ -57,7 +58,11 @@ Si recargas la página, la rendición en curso se mantiene. «Empezar una rendic
   [`templates/formato-rendicion.md`](templates/formato-rendicion.md):
   - hoja `RENDICION-MARCOBRE`, A4 al 83 %, logo;
   - FECHA · DOCUMENTO · Descripción · Nuevos Soles · Dólares, 39 filas;
-  - `=SUM(E14:E52)`; «Saldos Entregados» con la diferencia.
+  - `=SUM(E14:E52)`;
+  - «Saldos Entregados» con la diferencia y quién devuelve: si lo depositado supera lo gastado, el trabajador
+    devuelve a la empresa; si es menor, la empresa devuelve al trabajador;
+  - tu nombre arriba («Persona que recibe») y en «Persona que entrega»; abajo, en «Persona que recibe», quien
+    recibe el reporte en la oficina.
 - **Orden de las filas:** primero los comprobantes **en el orden en que los subiste o fotografiaste** (el PDF de
   sustentos sigue el mismo orden), luego las planillas por fecha («Planilla N° 001»…). Para controlar el orden
   exacto, súbelos o fotografíalos de uno en uno: si eliges varios de golpe, el navegador decide su orden.

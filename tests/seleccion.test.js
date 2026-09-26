@@ -16,7 +16,7 @@ describe('selección óptima', () => {
     const r = seleccionar(boroo, { presupuesto: 25000, excesoMaximo: 5000 })
     expect(r.total).toBe(25410)
     expect(r.exceso).toBe(410)
-    expect(r.diferencia).toBe(-410) // a favor del trabajador
+    expect(r.diferencia).toBe(-410) // la empresa devuelve al trabajador
     expect(r.cubre).toBe(true)
     expect(r.dentroDelMaximo).toBe(true)
     expect(r.montoPlanillas).toBe(5000)
@@ -48,7 +48,7 @@ describe('selección óptima', () => {
     const r = seleccionar([c('a', 3000), p('x', 2000)], { presupuesto: 10000, excesoMaximo: 1000 })
     expect(r.total).toBe(5000)
     expect(r.cubre).toBe(false)
-    expect(r.diferencia).toBe(5000) // a devolver
+    expect(r.diferencia).toBe(5000) // el trabajador devuelve
   })
 
   it('si todo pasa el exceso máximo, elige el menor exceso y lo marca', () => {

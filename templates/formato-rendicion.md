@@ -79,8 +79,11 @@ No vino en el Excel; se reconstruye del PDF impreso (A4 vertical, Calibri).
 2. **Planilla sin comprobante** también para alimentación (práctica de la empresa), pero la selección
    **prioriza comprobantes** (facturas/boletas) y usa planillas solo si hacen falta. El tope diario
    (4 % RMV, configurable) es **alerta, no bloqueo**.
-3. **«Saldos Entregados :»** lleva la **diferencia** = monto entregado − total gastos
-   (positiva: a devolver por el trabajador; negativa: a favor del trabajador).
+3. **«Saldos Entregados :»** lleva la diferencia entre lo depositado y lo gastado, en positivo (`E55 =ABS(monto-E53)`)
+   y a su lado quién devuelve (`D55`, fórmula): si lo depositado supera a lo gastado, «El trabajador devuelve a la
+   empresa»; si es menor, «La empresa devuelve al trabajador».
+6. Nombres: arriba «Persona que recibe» y abajo «Persona que entrega» llevan el nombre del trabajador (quien recibe
+   el dinero y entrega el reporte); el «Persona que recibe» del pie lleva a quien recibe el reporte en la oficina.
 4. Normalizaciones: «CONSUMO DE ALIMENTOS» (el original dice «DEALIMENTOS»), DOCUMENTO como
    `SERIE-NÚMERO` (p. ej. `E001-9951`), «Planilla N° 001».
 5. Orden de filas: primero los comprobantes **en el orden en que se subieron o fotografiaron** (así también

@@ -2,6 +2,7 @@
 import ExcelJS from 'exceljs'
 import { EMPRESA } from '../config/empresa.js'
 import { destinoPlanilla } from '../reglas/movilidad.js'
+import { textoSaldo } from '../reglas/rendicion.js'
 import { centimosATexto, isoADmy } from '../util/formato.js'
 import {
   ALTOS,
@@ -158,10 +159,17 @@ function hojaRendicion(libro, filas, datos, logo) {
   // pie: saldo = monto entregado − total gastos
   const saldo = datos.monto - totalSoles
   celda(`B${d.saldos}`, 'Saldos Entregados :', { font: NEGRITA, alignment: izq })
-  celda(`E${d.saldos}`, { formula: `${(datos.monto / 100).toFixed(2)}-E${t}`, result: saldo / 100 }, { font: NEGRITA, numFmt: FORMATO_SOLES })
-  celda(`D${d.saldos}`, saldo > 0 ? 'a devolver por el trabajador' : saldo < 0 ? 'a favor del trabajador' : 'sin saldo', {
-    alignment: { horizontal: 'right', vertical: 'bottom' },
-  })
+  // monto en positivo y, al lado, quién devuelve a quién (fórmulas: se actualizan si se edita el Excel)
+  const monto = (datos.monto / 100).toFixed(2)
+  celda(`E${d.saldos}`, { formula: `ABS(${monto}-E${t})`, result: Math.abs(saldo) / 100 }, { font: NEGRITA, numFmt: FORMATO_SOLES })
+  celda(
+    `D${d.saldos}`,
+    {
+      formula: `IF(${monto}-E${t}>0,"${textoSaldo(1)}",IF(${monto}-E${t}<0,"${textoSaldo(-1)}","${textoSaldo(0)}"))`,
+      result: textoSaldo(saldo),
+    },
+    { font: NEGRITA, alignment: { horizontal: 'right', vertical: 'bottom' } },
+  )
   celda(`B${d.fechaRendicion}`, `Fecha de rendición  : ${isoADmy(datos.fechaRendicion)}`, { font: NEGRITA, alignment: izq })
   ws.mergeCells(`E${d.fechaRendicion}:F${d.fechaRendicion}`)
   celda(`B${d.entrega}`, `Persona que entrega: ${datos.persona} `, { font: NEGRITA, alignment: izq })

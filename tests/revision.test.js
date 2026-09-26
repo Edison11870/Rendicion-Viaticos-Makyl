@@ -26,13 +26,33 @@ describe('propuesta de categoría y descripción', () => {
 
   it('hospedaje y pasajes', () => {
     expect(proponerClasificacion({ detalle: '1 NOCHE HABITACIÓN SIMPLE' }).categoria).toBe('hospedaje')
-    expect(proponerClasificacion({ detalle: 'PASAJE LIMA - HUARAZ' })).toMatchObject({ categoria: 'movilidad', descripcion: 'PASAJE TERRESTRE' })
+    expect(proponerClasificacion({ detalle: 'PASAJE LIMA - HUARAZ' })).toMatchObject({ categoria: 'pasajes', descripcion: 'PASAJE TERRESTRE' })
   })
 
   it('sin pistas: «otros» con el detalle como descripción', () => {
-    const p = proponerClasificacion({ detalle: 'Cinta métrica 5 m' })
+    const p = proponerClasificacion({ detalle: 'Llavero recuerdo' })
     expect(p.categoria).toBe('otros')
-    expect(p.descripcion).toBe('CINTA MÉTRICA 5 M')
+    expect(p.descripcion).toBe('LLAVERO RECUERDO')
+  })
+
+  it('categorías adicionales', () => {
+    const cat = (detalle, razonSocial = '') => proponerClasificacion({ detalle, razonSocial })
+    expect(cat('PASAJE AEREO LIMA - CAJAMARCA', 'LATAM AIRLINES PERU')).toMatchObject({ categoria: 'pasajes', descripcion: 'PASAJE AÉREO' })
+    expect(cat('GASOHOL 90 10 GAL', 'PRIMAX')).toMatchObject({ categoria: 'combustible', descripcion: 'COMBUSTIBLE' })
+    expect(cat('PEAJE')).toMatchObject({ categoria: 'peajes', descripcion: 'PEAJE' })
+    expect(cat('ESTACIONAMIENTO 2 HORAS')).toMatchObject({ categoria: 'peajes', descripcion: 'ESTACIONAMIENTO' })
+    expect(cat('Cinta métrica 5 m', 'FERRETERIA EJEMPLO')).toMatchObject({ categoria: 'materiales', descripcion: 'MATERIALES Y ÚTILES' })
+    expect(cat('CASCO DE SEGURIDAD')).toMatchObject({ categoria: 'epp', descripcion: 'EQUIPO DE PROTECCIÓN PERSONAL' })
+    expect(cat('PARACETAMOL 500MG', 'INKAFARMA')).toMatchObject({ categoria: 'salud', descripcion: 'MEDICAMENTOS' })
+    expect(cat('RECARGA 20', 'CLARO')).toMatchObject({ categoria: 'comunicaciones' })
+    expect(cat('FOTOCOPIAS A4')).toMatchObject({ categoria: 'impresiones' })
+    expect(cat('ENVIO DE SOBRE', 'OLVA COURIER')).toMatchObject({ categoria: 'envios', descripcion: 'SERVICIO DE COURIER' })
+    expect(cat('LAVADO DE ROPA')).toMatchObject({ categoria: 'lavanderia' })
+  })
+
+  it('«Otros Cargos» o «Central telefónica» del pie no cambian la categoría', () => {
+    const p = proponerClasificacion({ detalle: '', razonSocial: 'EJEMPLO' }, 'Central telefónica: 900\nCONSUMO\nOtros Cargos : S/ 0.00')
+    expect(p.categoria).toBe('alimentacion')
   })
 
   it('limpia el detalle para la columna Descripción', () => {

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { conClasificacion, conLectura, nuevoComprobante } from '../src/reglas/comprobantes.js'
 import { gastoVacio } from '../src/reglas/movilidad.js'
-import { armarSeleccion, candidatosRendicion, filasRendicion, textoSaldo } from '../src/reglas/rendicion.js'
+import { armarSeleccion, candidatosRendicion, filasRendicion, textoSaldo, textoSaldoUsuario } from '../src/reglas/rendicion.js'
 import { TRABAJADOR_VACIO } from '../src/reglas/viaje.js'
 
 const viaje = { fechaSalida: '2026-03-02', fechaRetorno: '2026-03-06', montoRecibido: '250' }
@@ -46,7 +46,10 @@ describe('filas de la hoja de rendición', () => {
     expect(cand.planillas).toHaveLength(3)
     expect(sel.total).toBe(25410)
     expect(sel.diferencia).toBe(-410)
-    expect(textoSaldo(sel.diferencia)).toBe('a favor del trabajador')
+    expect(textoSaldo(sel.diferencia)).toBe('La empresa devuelve al trabajador')
+    expect(textoSaldoUsuario(sel.diferencia)).toBe('la empresa te devuelve')
+    expect(textoSaldo(500)).toBe('El trabajador devuelve a la empresa')
+    expect(textoSaldoUsuario(500)).toBe('tú devuelves a la empresa')
   })
 
   it('comprobantes en el orden en que se subieron (no por fecha) y luego planillas desde 001', () => {

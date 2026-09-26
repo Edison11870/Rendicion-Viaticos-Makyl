@@ -67,11 +67,22 @@ export function filasRendicion(cand, ids, forzados = {}) {
   return filas
 }
 
-/** Texto del saldo para la pantalla y el Excel. */
+/**
+ * Saldo = monto depositado − total de gastos.
+ * > 0: sobró dinero → el trabajador devuelve a la empresa.
+ * < 0: se gastó más de lo depositado → la empresa devuelve al trabajador.
+ */
 export function textoSaldo(diferencia) {
-  if (diferencia > 0) return 'a devolver por el trabajador'
-  if (diferencia < 0) return 'a favor del trabajador'
-  return 'sin saldo'
+  if (diferencia > 0) return 'El trabajador devuelve a la empresa'
+  if (diferencia < 0) return 'La empresa devuelve al trabajador'
+  return 'Sin saldo pendiente'
+}
+
+/** Lo mismo, dirigido al usuario en pantalla. */
+export function textoSaldoUsuario(diferencia) {
+  if (diferencia > 0) return 'tú devuelves a la empresa'
+  if (diferencia < 0) return 'la empresa te devuelve'
+  return 'sin saldo pendiente'
 }
 
 /**

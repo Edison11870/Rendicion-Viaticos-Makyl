@@ -83,8 +83,8 @@ export default function PasoViaje({ trabajador, setTrabajador, viaje, setViaje, 
                 render={(p) => <input {...p} value={trabajador.apellidos} onChange={t('apellidos')} autoComplete="family-name" placeholder="Quispe Rojas" />} />
               <Campo etiqueta="DNI" error={errT('dni')} ancho="tercio"
                 render={(p) => <input {...p} value={trabajador.dni} onChange={t('dni')} inputMode="numeric" maxLength={8} />} />
-              <Campo etiqueta="Persona que recibe (oficina)" error={errT('recibeAdministracion')} ancho="dostercios"
-                ayuda="Va al pie de la rendición."
+              <Campo etiqueta="Persona que recibe el reporte (oficina)" error={errT('recibeAdministracion')} ancho="dostercios"
+                ayuda="Va al pie, en «Persona que recibe». Tu nombre va arriba y en «Persona que entrega»."
                 render={(p) => <input {...p} value={trabajador.recibeAdministracion} onChange={t('recibeAdministracion')} />} />
             </div>
 

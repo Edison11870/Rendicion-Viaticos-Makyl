@@ -1,5 +1,5 @@
 import { TIPOS } from '../reglas/comprobantes.js'
-import { textoSaldo } from '../reglas/rendicion.js'
+import { textoSaldoUsuario } from '../reglas/rendicion.js'
 import { isoADmy, soles } from '../util/formato.js'
 
 const ETIQUETA_TIPO = Object.fromEntries(TIPOS.map((t) => [t.valor, t.etiqueta]))
@@ -43,7 +43,7 @@ export default function PasoSeleccion({ cand, sel, forzados, setForzados, onVolv
           <span className="kpi__valor kpi__valor--azul">{soles(sel.total)}</span>
         </div>
         <div className={`kpi ${!sel.cubre ? 'kpi--error' : ''}`}>
-          <span className="kpi__etiqueta">Saldo ({textoSaldo(saldo)})</span>
+          <span className="kpi__etiqueta">Saldo: {textoSaldoUsuario(saldo)}</span>
           <span className="kpi__valor">{soles(Math.abs(saldo))}</span>
         </div>
         <div className={`kpi ${sel.cubre && !sel.dentroDelMaximo ? 'kpi--aviso' : ''}`}>
@@ -54,7 +54,7 @@ export default function PasoSeleccion({ cand, sel, forzados, setForzados, onVolv
 
       {!sel.cubre && (
         <p className="aviso aviso--error" role="alert">
-          Con los comprobantes y planillas disponibles no se llega al monto recibido: quedan {soles(saldo)} por devolver.
+          Con los comprobantes y planillas disponibles no se llega al monto recibido: tú devuelves {soles(saldo)} a la empresa.
           Revisa si falta algún comprobante o agrega gastos sin comprobante.
         </p>
       )}

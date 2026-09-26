@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { datosSalida, nombreArchivo } from '../salida/datos.js'
-import { noUtilizados, textoSaldo } from '../reglas/rendicion.js'
+import { noUtilizados, textoSaldoUsuario } from '../reglas/rendicion.js'
 import { isoADmy, soles } from '../util/formato.js'
 
 // el generador (ExcelJS, pdf-lib, fuentes) se carga solo al usarlo
@@ -40,7 +40,7 @@ export default function PasoResultado({ filas, sel, trabajador, viaje, comproban
         <h1>Resultado</h1>
         <p>
           Rendición de <strong>{viaje.proyecto}</strong> · {filas.length} filas · total {soles(sel.total)} · saldo{' '}
-          {soles(Math.abs(sel.diferencia))} {textoSaldo(sel.diferencia)}.
+          {soles(Math.abs(sel.diferencia))}: {textoSaldoUsuario(sel.diferencia)}.
         </p>
       </header>
 

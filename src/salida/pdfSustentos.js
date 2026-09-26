@@ -4,6 +4,7 @@ import fontkit from '@pdf-lib/fontkit'
 import { PDFDocument, rgb } from 'pdf-lib'
 import { EMPRESA } from '../config/empresa.js'
 import { destinoPlanilla } from '../reglas/movilidad.js'
+import { textoSaldo } from '../reglas/rendicion.js'
 import { centimosATexto, isoADmy } from '../util/formato.js'
 import { ALTOS, ALTOS_PIE, ALTO_DETALLE, ALTO_ULTIMO_DETALLE, ANCHOS, FILA_PRIMER_DETALLE, LOGO, PAGINA, disposicion } from './formato.js'
 import { dibujarHoja } from './pdfHoja.js'
@@ -71,8 +72,8 @@ export function hojaRendicion(filas, datos) {
     { f: d.total, c: 5, monto: centimosATexto(totalSoles), borde: { t: medio, b: medio, l: medio } },
     { f: d.total, c: 6, texto: totalDolares ? `S/.${centimosATexto(totalDolares)}` : '', h: 'center', borde: { t: medio, b: medio, l: medio, r: medio } },
     { f: d.saldos, c: 2, c2: 3, texto: 'Saldos Entregados :', negrita: true },
-    { f: d.saldos, c: 4, texto: saldo > 0 ? 'a devolver por el trabajador' : saldo < 0 ? 'a favor del trabajador' : 'sin saldo', h: 'right' },
-    { f: d.saldos, c: 5, monto: `${saldo < 0 ? '-' : ''}${centimosATexto(Math.abs(saldo))}`, negrita: true },
+    { f: d.saldos, c: 4, texto: textoSaldo(saldo), negrita: true, h: 'right' },
+    { f: d.saldos, c: 5, monto: centimosATexto(Math.abs(saldo)), negrita: true },
     { f: d.fechaRendicion, c: 2, c2: 4, texto: `Fecha de rendición  : ${isoADmy(datos.fechaRendicion)}`, negrita: true },
     { f: d.entrega, c: 2, c2: 4, texto: `Persona que entrega: ${datos.persona}`, negrita: true },
     { f: d.recibe, c: 2, c2: 4, texto: `Persona que recibe: ${datos.recibe}`, negrita: true },
