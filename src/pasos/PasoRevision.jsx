@@ -32,7 +32,6 @@ export default function PasoRevision({ comprobantes, viaje, onVolver, onContinua
           clas: c.clasificacion || { ...proponerClasificacion(c.campos, c.texto), confirmado: false },
         }
       })
-      .sort((a, b) => (a.c.campos.fecha || '9').localeCompare(b.c.campos.fecha || '9'))
   }, [lista, viaje])
 
   const cuenta = (e) => filas.filter((f) => f.estado === e).length

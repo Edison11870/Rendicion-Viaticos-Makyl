@@ -58,7 +58,9 @@ Si recargas la página, la rendición en curso se mantiene. «Empezar una rendic
   - hoja `RENDICION-MARCOBRE`, A4 al 83 %, logo;
   - FECHA · DOCUMENTO · Descripción · Nuevos Soles · Dólares, 39 filas;
   - `=SUM(E14:E52)`; «Saldos Entregados» con la diferencia.
-- **Orden de las filas:** primero los comprobantes por fecha, luego las planillas («Planilla N° 001»…).
+- **Orden de las filas:** primero los comprobantes **en el orden en que los subiste o fotografiaste** (el PDF de
+  sustentos sigue el mismo orden), luego las planillas por fecha («Planilla N° 001»…). Para controlar el orden
+  exacto, súbelos o fotografíalos de uno en uno: si eliges varios de golpe, el navegador decide su orden.
 - **Planilla de Movilidad Diaria:** Motivo · Destino («Origen - Destino») · Sub Total · Total, Trabajador (el
   total del día) · Firma.
 

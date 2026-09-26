@@ -6,7 +6,8 @@ const ETIQUETA_TIPO = Object.fromEntries(TIPOS.map((t) => [t.valor, t.etiqueta])
 
 /** Paso 5: combinación que cubre el monto recibido con el menor exceso (prefiere comprobantes). */
 export default function PasoSeleccion({ cand, sel, forzados, setForzados, onVolver, onContinuar }) {
-  const todos = [...cand.comprobantes, ...cand.planillas].sort((a, b) => (a.fecha || '').localeCompare(b.fecha || ''))
+  // comprobantes en el orden en que se subieron; planillas al final, por fecha
+  const todos = [...cand.comprobantes, ...[...cand.planillas].sort((a, b) => a.fecha.localeCompare(b.fecha))]
   const usados = todos.filter((x) => sel.ids.has(x.id))
   const noUsados = todos.filter((x) => !sel.ids.has(x.id))
 

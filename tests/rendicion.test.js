@@ -49,16 +49,29 @@ describe('filas de la hoja de rendición', () => {
     expect(textoSaldo(sel.diferencia)).toBe('a favor del trabajador')
   })
 
-  it('comprobantes por fecha y luego planillas numeradas desde 001', () => {
+  it('comprobantes en el orden en que se subieron (no por fecha) y luego planillas desde 001', () => {
     expect(filas.map((f) => [f.fecha, f.documento, f.descripcion, f.soles])).toEqual([
-      ['2026-03-02', '0003-1885', 'CONSUMO DE ALIMENTOS', 1200],
-      ['2026-03-02', 'E001-605', 'CONSUMO DE ALIMENTOS', 2000],
-      ['2026-03-02', 'FA01-00034972', 'SERVICIO DE TAXI', 3000],
-      ['2026-03-06', 'E001-15', 'SERVICIO DE TAXI', 3360],
       ['2026-03-06', 'E001-9951', 'SERVICIO DE TAXI', 8000],
+      ['2026-03-02', 'FA01-00034972', 'SERVICIO DE TAXI', 3000],
+      ['2026-03-02', 'E001-605', 'CONSUMO DE ALIMENTOS', 2000],
+      ['2026-03-02', '0003-1885', 'CONSUMO DE ALIMENTOS', 1200],
       ['2026-03-06', 'F023-00002781', 'CONSUMO DE ALIMENTOS', 2850],
+      ['2026-03-06', 'E001-15', 'SERVICIO DE TAXI', 3360],
       ['2026-03-06', 'Planilla N° 001', 'SERVICIO DE TAXI', 5000],
     ])
     expect(filas.reduce((s, f) => s + f.soles, 0)).toBe(sel.total)
+  })
+
+  it('un comprobante en dólares forzado a entrar queda en su posición de subida', () => {
+    const usd = comp('INV-77', '2026-03-03', 1500, 'SERVICIO DE TAXI')
+    usd.campos = { ...usd.campos, moneda: 'USD' }
+    const conUsd = [lista[0], usd, lista[1]]
+    const c2 = candidatosRendicion(conUsd, [], viaje)
+    const f2 = filasRendicion(c2, new Set([lista[0].id, lista[1].id]), { [usd.id]: 'si' })
+    expect(f2.map((f) => [f.documento, f.soles, f.dolares])).toEqual([
+      ['E001-9951', 8000, null],
+      ['INV-77', null, 1500],
+      ['FA01-00034972', 3000, null],
+    ])
   })
 })

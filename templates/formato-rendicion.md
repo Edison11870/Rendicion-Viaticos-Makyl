@@ -83,4 +83,5 @@ No vino en el Excel; se reconstruye del PDF impreso (A4 vertical, Calibri).
    (positiva: a devolver por el trabajador; negativa: a favor del trabajador).
 4. Normalizaciones: «CONSUMO DE ALIMENTOS» (el original dice «DEALIMENTOS»), DOCUMENTO como
    `SERIE-NÚMERO` (p. ej. `E001-9951`), «Planilla N° 001».
-5. Orden de filas: primero comprobantes por fecha, luego planillas por número.
+5. Orden de filas: primero los comprobantes **en el orden en que se subieron o fotografiaron** (así también
+   en el PDF de sustentos), luego las planillas por fecha, numeradas 001… solo entre las usadas.

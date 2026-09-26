@@ -8,10 +8,11 @@ import { aCentimos } from '../util/formato.js'
 export function candidatosRendicion(lista, gastos, viaje) {
   const comprobantes = []
   const dolares = []
-  for (const c of lista) {
+  for (const [orden, c] of lista.entries()) {
     if (!c.campos?.esComprobante) continue
     if (estadoRevision(c, alertasComprobante(c, viaje, lista)) !== 'valido') continue
-    const item = { id: c.id, tipo: 'comprobante', monto: c.campos.total, fecha: c.campos.fecha, c }
+    // orden: posición en que el usuario subió o fotografió el comprobante
+    const item = { id: c.id, tipo: 'comprobante', monto: c.campos.total, fecha: c.campos.fecha, orden, c }
     ;(c.campos.moneda === 'USD' ? dolares : comprobantes).push(item)
   }
   const planillas = agruparPorDia(gastos)
@@ -29,17 +30,18 @@ export function armarSeleccion(cand, viaje, trabajador, forzados = {}) {
 }
 
 /**
- * Filas de la hoja en el orden de la empresa: comprobantes por fecha, luego planillas por fecha
- * (numeradas 001, 002… solo entre las que entran). Los comprobantes en dólares forzados a entrar
- * van en la columna Dólares.
+ * Filas de la hoja: comprobantes en el ORDEN EN QUE SE SUBIERON (o fotografiaron), luego planillas por
+ * fecha (numeradas 001, 002… solo entre las que entran). Los comprobantes en dólares forzados a entrar
+ * van en la columna Dólares, en su posición de subida.
  */
 export function filasRendicion(cand, ids, forzados = {}) {
-  const porFecha = (a, b) => (a.fecha || '').localeCompare(b.fecha || '') || (a.c?.campos.documento || '').localeCompare(b.c?.campos.documento || '')
-  const comps = cand.comprobantes.filter((x) => ids.has(x.id)).sort(porFecha)
-  const usd = cand.dolares.filter((x) => forzados[x.id] === 'si').sort(porFecha)
+  const porSubida = (a, b) => a.orden - b.orden
+  const porFecha = (a, b) => (a.fecha || '').localeCompare(b.fecha || '')
+  const comps = cand.comprobantes.filter((x) => ids.has(x.id))
+  const usd = cand.dolares.filter((x) => forzados[x.id] === 'si')
   const plans = cand.planillas.filter((x) => ids.has(x.id)).sort(porFecha)
 
-  const filas = [...comps, ...usd].sort(porFecha).map((x) => ({
+  const filas = [...comps, ...usd].sort(porSubida).map((x) => ({
     id: x.id,
     tipo: 'comprobante',
     fecha: x.c.campos.fecha,
@@ -73,7 +75,7 @@ export function textoSaldo(diferencia) {
 }
 
 /**
- * Comprobantes que NO entran en esta rendición, con el motivo. Se guardan para otra rendición
+ * Comprobantes que NO entran en esta rendición, con el motivo (en el orden de subida). Se guardan para otra rendición
  * (p. ej. los de otro viaje que se subieron por error, o los que no hicieron falta).
  */
 export function noUtilizados(lista, ids, viaje) {
@@ -90,5 +92,4 @@ export function noUtilizados(lista, ids, viaje) {
       else if (c.campos.moneda === 'USD') motivo = 'En dólares'
       return { c, motivo }
     })
-    .sort((a, b) => (a.c.campos.fecha || '').localeCompare(b.c.campos.fecha || ''))
 }
