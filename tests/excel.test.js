@@ -74,10 +74,10 @@ describe('Excel de rendición (formato de la empresa)', () => {
   it('pie con el saldo (diferencia) y firmas', async () => {
     const ws = (await releer()).getWorksheet('RENDICION-MARCOBRE')
     expect(ws.getCell('B55').value).toBe('Saldos Entregados :')
-    // gastó 180 de 250 depositados: sobran 70 → el trabajador devuelve
+    // gastó 180 de 250 depositados: sobran 70 → el trabajador debe devolverlos
     expect(ws.getCell('E55').value).toMatchObject({ formula: 'ABS(250.00-E53)', result: 70 })
-    expect(ws.getCell('D55').value).toMatchObject({ result: 'El trabajador devuelve a la empresa' })
-    expect(ws.getCell('D55').value.formula).toContain('IF(250.00-E53>0,"El trabajador devuelve a la empresa"')
+    expect(ws.getCell('D55').value).toMatchObject({ result: 'Saldo pendiente por devolver a la empresa' })
+    expect(ws.getCell('D55').value.formula).toContain('IF(250.00-E53>0,"Saldo pendiente por devolver a la empresa"')
     expect(ws.getCell('B57').value).toBe('Fecha de rendición  : 21/03/2026')
     expect(ws.getCell('B59').value).toBe('Persona que entrega: Quispe Rojas Juan Carlos ')
     expect(ws.getCell('B60').value).toBe('Persona que recibe: Administración')

@@ -59,8 +59,8 @@ Si recargas la página, la rendición en curso se mantiene. «Empezar una rendic
   - hoja `RENDICION-MARCOBRE`, A4 al 83 %, logo;
   - FECHA · DOCUMENTO · Descripción · Nuevos Soles · Dólares, 39 filas;
   - `=SUM(E14:E52)`;
-  - «Saldos Entregados» con la diferencia y quién devuelve: si lo depositado supera lo gastado, el trabajador
-    devuelve a la empresa; si es menor, la empresa devuelve al trabajador;
+  - «Saldos Entregados» con la diferencia como saldo pendiente: «Saldo pendiente por devolver a la empresa» si lo depositado supera lo
+    gastado, o «Saldo pendiente por reembolsar al trabajador» si es menor;
   - tu nombre arriba («Persona que recibe») y en «Persona que entrega»; abajo, en «Persona que recibe», quien
     recibe el reporte en la oficina.
 - **Orden de las filas:** primero los comprobantes **en el orden en que los subiste o fotografiaste** (el PDF de

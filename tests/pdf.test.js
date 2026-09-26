@@ -62,9 +62,9 @@ describe('PDF de sustentos', () => {
     expect(en(52, 2).borde).toEqual({ t: 'thin', l: 'thin', r: 'thin' })
     expect(en(53, 2).texto).toBe('Total gastos')
     expect(en(53, 5).monto).toBe('254.10')
-    // gastó 254.10 de 250 depositados → la empresa devuelve 4.10
+    // gastó 254.10 de 250 depositados → la empresa debe reembolsar 4.10
     expect(en(55, 5).monto).toBe('4.10')
-    expect(en(55, 4).texto).toBe('La empresa devuelve al trabajador')
+    expect(en(55, 4).texto).toBe('Saldo pendiente por reembolsar al trabajador')
     expect(hoja.ocultas).toEqual([56, 58])
   })
 })

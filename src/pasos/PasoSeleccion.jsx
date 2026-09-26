@@ -54,7 +54,7 @@ export default function PasoSeleccion({ cand, sel, forzados, setForzados, onVolv
 
       {!sel.cubre && (
         <p className="aviso aviso--error" role="alert">
-          Con los comprobantes y planillas disponibles no se llega al monto recibido: tú devuelves {soles(saldo)} a la empresa.
+          Con los comprobantes y planillas disponibles no se llega al monto recibido: debes devolver {soles(saldo)} a la empresa.
           Revisa si falta algún comprobante o agrega gastos sin comprobante.
         </p>
       )}

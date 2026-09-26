@@ -159,7 +159,7 @@ function hojaRendicion(libro, filas, datos, logo) {
   // pie: saldo = monto entregado − total gastos
   const saldo = datos.monto - totalSoles
   celda(`B${d.saldos}`, 'Saldos Entregados :', { font: NEGRITA, alignment: izq })
-  // monto en positivo y, al lado, quién devuelve a quién (fórmulas: se actualizan si se edita el Excel)
+  // monto en positivo y, al lado, el saldo pendiente (quién debe a quién) (fórmulas: se actualizan si se edita el Excel)
   const monto = (datos.monto / 100).toFixed(2)
   celda(`E${d.saldos}`, { formula: `ABS(${monto}-E${t})`, result: Math.abs(saldo) / 100 }, { font: NEGRITA, numFmt: FORMATO_SOLES })
   celda(

@@ -69,19 +69,20 @@ export function filasRendicion(cand, ids, forzados = {}) {
 
 /**
  * Saldo = monto depositado − total de gastos.
- * > 0: sobró dinero → el trabajador devuelve a la empresa.
- * < 0: se gastó más de lo depositado → la empresa devuelve al trabajador.
+ * > 0: sobró dinero → queda pendiente que el trabajador lo devuelva a la empresa.
+ * < 0: se gastó más de lo depositado → queda pendiente que la empresa lo reembolse al trabajador.
+ * Se redacta como PENDIENTE: al presentar la rendición todavía no se ha pagado nada.
  */
 export function textoSaldo(diferencia) {
-  if (diferencia > 0) return 'El trabajador devuelve a la empresa'
-  if (diferencia < 0) return 'La empresa devuelve al trabajador'
+  if (diferencia > 0) return 'Saldo pendiente por devolver a la empresa'
+  if (diferencia < 0) return 'Saldo pendiente por reembolsar al trabajador'
   return 'Sin saldo pendiente'
 }
 
 /** Lo mismo, dirigido al usuario en pantalla. */
 export function textoSaldoUsuario(diferencia) {
-  if (diferencia > 0) return 'tú devuelves a la empresa'
-  if (diferencia < 0) return 'la empresa te devuelve'
+  if (diferencia > 0) return 'debes devolver a la empresa'
+  if (diferencia < 0) return 'la empresa te debe reembolsar'
   return 'sin saldo pendiente'
 }
 

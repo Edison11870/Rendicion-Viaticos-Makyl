@@ -46,10 +46,11 @@ describe('filas de la hoja de rendición', () => {
     expect(cand.planillas).toHaveLength(3)
     expect(sel.total).toBe(25410)
     expect(sel.diferencia).toBe(-410)
-    expect(textoSaldo(sel.diferencia)).toBe('La empresa devuelve al trabajador')
-    expect(textoSaldoUsuario(sel.diferencia)).toBe('la empresa te devuelve')
-    expect(textoSaldo(500)).toBe('El trabajador devuelve a la empresa')
-    expect(textoSaldoUsuario(500)).toBe('tú devuelves a la empresa')
+    // al presentar la rendición nada se ha pagado aún: el texto habla de saldo PENDIENTE
+    expect(textoSaldo(sel.diferencia)).toBe('Saldo pendiente por reembolsar al trabajador')
+    expect(textoSaldoUsuario(sel.diferencia)).toBe('la empresa te debe reembolsar')
+    expect(textoSaldo(500)).toBe('Saldo pendiente por devolver a la empresa')
+    expect(textoSaldoUsuario(500)).toBe('debes devolver a la empresa')
   })
 
   it('comprobantes en el orden en que se subieron (no por fecha) y luego planillas desde 001', () => {

@@ -54,7 +54,7 @@ export function seleccionar(candidatos, { presupuesto, excesoMaximo, forzados = 
     ids,
     total: mejor.total,
     exceso: mejor.exceso,
-    diferencia: presupuesto - mejor.total, // > 0: el trabajador devuelve · < 0: la empresa devuelve al trabajador
+    diferencia: presupuesto - mejor.total, // > 0: el trabajador debe devolver · < 0: la empresa debe reembolsar
     cubre: mejor.exceso >= 0,
     dentroDelMaximo: mejor.exceso >= 0 && mejor.exceso <= excesoMaximo,
     montoPlanillas: mejor.montoPlanillas,

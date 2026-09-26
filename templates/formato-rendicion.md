@@ -80,8 +80,8 @@ No vino en el Excel; se reconstruye del PDF impreso (A4 vertical, Calibri).
    **prioriza comprobantes** (facturas/boletas) y usa planillas solo si hacen falta. El tope diario
    (4 % RMV, configurable) es **alerta, no bloqueo**.
 3. **«Saldos Entregados :»** lleva la diferencia entre lo depositado y lo gastado, en positivo (`E55 =ABS(monto-E53)`)
-   y a su lado quién devuelve (`D55`, fórmula): si lo depositado supera a lo gastado, «El trabajador devuelve a la
-   empresa»; si es menor, «La empresa devuelve al trabajador».
+   y a su lado el saldo **pendiente** (`D55`, fórmula): si lo depositado supera a lo gastado, «Saldo pendiente por devolver a la empresa»;
+   si es menor, «Saldo pendiente por reembolsar al trabajador». Se redacta como pendiente porque al presentar la rendición aún no se ha pagado.
 6. Nombres: arriba «Persona que recibe» y abajo «Persona que entrega» llevan el nombre del trabajador (quien recibe
    el dinero y entrega el reporte); el «Persona que recibe» del pie lleva a quien recibe el reporte en la oficina.
 4. Normalizaciones: «CONSUMO DE ALIMENTOS» (el original dice «DEALIMENTOS»), DOCUMENTO como
